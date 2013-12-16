@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	   
+	<appender name="MAIN" class="ch.qos.logback.core.FileAppender">
+		<file>LogFile.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%d [%thread] %-5level  %logger{35} - %msg%n</pattern>
+		</encoder>
+	</appender>
+   
+	<appender name="CODEFRAGMENTS" class="ch.qos.logback.core.FileAppender">
+		<file>CodeFragments.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="HASHING" class="ch.qos.logback.core.FileAppender">
+		<file>Hashing.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="main" level="TRACE" additivity="false">
+		<appender-ref ref="MAIN"/>
+	</logger>
+
+	<logger name="codeFragment"  level="OFF" additivity="false">
+		<appender-ref ref="CODEFRAGMENTS"/>
+		
+	</logger>
+		<logger name="hashing"  level="OFF" additivity="false">
+		<appender-ref ref="HASHING"/>
+	</logger>
+
+	<root>
+		<appender-ref ref="MAIN"/>
+	</root>
+	
+</configuration>

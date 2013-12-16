@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CPSeeker" default="CPSeeker">
+
+<!--  all properties are in build.properties -->
+<property file="build.properties" />
+
+	<buildnumber file="build.num"/>
+	
+	<path id="libraries">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- Clean the build system -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${doc.dir}" /> 
+	</target>
+	
+	<!-- Creates the  build  directory-->
+	<target name="makedir" depends="clean">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${doc.dir}" />
+	</target>
+	
+	<!-- Generate javadoc-->
+	<target name="doc" depends="makedir" description="generate documentation">
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}"/>
+	</target>
+	
+	<!-- Compiles the java files and copies the required resources -->
+	<target name="compile" depends="clean,makedir">
+		<javac destdir="${build.dir}">
+			<src path="${src.dir}" />
+			<classpath refid="libraries"/>
+		</javac>
+		<copy todir="${build.dir}">
+			<fileset file="resource/logback.xml" />
+		</copy>
+	</target>
+	
+	<!--Take a timestamp-->
+	<tstamp>
+		<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+	</tstamp>
+	
+	<!-- Deploys the jar file-->
+	<target name="CPSeeker" depends="compile,doc">
+		<jar destfile="CPSeeker-${version.num}.b${build.number}.jar" filesetmanifest="mergewithoutmain">
+			<fileset dir="${build.dir}" />
+			<zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+			<manifest>
+				<!-- Standard manifest attributes -->
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Built-By" value="${built_by}" />
+				<attribute name="Created-By" value="${built_by}" />
+				<attribute name="Built-Date" value="${TODAY}" />
+				<attribute name="Main-Class" value="cpseeker.Main" />
+			</manifest>
+		</jar>
+	</target>
+</project>
